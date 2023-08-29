@@ -1,14 +1,13 @@
-using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class GroundCheckTutorial : MonoBehaviour
+public class GroundCheck : MonoBehaviour
 {
 
     private bool onGround;
     private float friction;
-    private float collisionAngleSensitivity = 0.9f;
+    [SerializeField] private float collisionAngleSensitivity = 0.9f;
 
 
     private void OnCollisionEnter2D(Collision2D collision)

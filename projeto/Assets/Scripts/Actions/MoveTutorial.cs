@@ -13,7 +13,7 @@ public class Move : MonoBehaviour
 
     private Vector2 direction, velocity, desiredVelocity;
     private Rigidbody2D body;
-    private GroundCheck _groundCheck;
+    private GroundCheckTutorial _groundCheck;
 
     private float maxSpeedChange, acceleration;
     private bool onGround;
@@ -24,7 +24,7 @@ public class Move : MonoBehaviour
     void Awake()
     {
         body = GetComponent<Rigidbody2D>();
-        _groundCheck = GetComponent<GroundCheck>();
+        _groundCheck = GetComponent<GroundCheckTutorial>();
     }
 
     // Update is called once per frame
