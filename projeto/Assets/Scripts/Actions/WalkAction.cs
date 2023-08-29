@@ -17,7 +17,7 @@ public class WalkAction: MonoBehaviour
 
     private Vector2 _targetVelocity;
     private Vector2 _newVelocity;
-    private float _acceleration;
+    private float _acceleration, _maxSpeedChange;
     
     //[SerializeField, Range(0f, 100f)] private float _maxSpeed;
     //[SerializeField, Range(0f, 100f)] private float _maxAccelerationUnits;
@@ -42,7 +42,15 @@ public class WalkAction: MonoBehaviour
             ? _maxWalkAccelerationUnits
             : _maxWalkAirAccelerationUnits;
 
-        _newVelocity.x = Mathf.MoveTowards(_newVelocity.x, _targetVelocity.x, _acceleration);
+        /*
+        if (_acceleration == _maxWalkAirAccelerationUnits)
+        {
+            Debug.Log(_acceleration);
+        }
+        */
+        _maxSpeedChange = _acceleration * Time.fixedDeltaTime;
+        
+        _newVelocity.x = Mathf.MoveTowards(_newVelocity.x, _targetVelocity.x, _maxSpeedChange);
         _rigidbody2D.velocity = _newVelocity;
 
     }
