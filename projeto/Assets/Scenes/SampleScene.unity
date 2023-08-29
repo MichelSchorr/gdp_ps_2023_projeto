@@ -667,9 +667,12 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _rigidbody2D: {fileID: 415610291}
   _groundCheck: {fileID: 291234549}
+  conserveMomentum: 0
   _walkSpeed: 4
   _maxWalkAccelerationUnits: 40
   _maxWalkAirAccelerationUnits: 20
+  _maxWalkDecelerationUnits: 40
+  _maxWalkAirDecelerationUnits: 20
 --- !u!114 &415610298
 MonoBehaviour:
   m_ObjectHideFlags: 0
