@@ -415,8 +415,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f0cf18637bbd2be42b91a6d1610ff595, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  collisionAngleSensitivity: 0.9
   _collider2D: {fileID: 291234550}
+  collisionAngleSensitivity: 0.9
+  collisionIgnoreSeconds: 5
 --- !u!68 &291234550
 EdgeCollider2D:
   m_ObjectHideFlags: 0
@@ -745,9 +746,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: df0e7ca2e118948639da05a55b129222, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  jumpHeight: 5
   _groundCheck: {fileID: 291234549}
   _rigidbody2D: {fileID: 415610291}
+  jumpHeight: 5
+  airJumps: 2
 --- !u!1 &519420028
 GameObject:
   m_ObjectHideFlags: 0
