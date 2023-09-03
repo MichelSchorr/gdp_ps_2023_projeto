@@ -2,54 +2,60 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.Serialization;
 
 
-public class WalkAction: MonoBehaviour
+//[CreateAssetMenu(fileName = "New Walk Action", menuName = "Action/Walk")]
+public class WalkAction: Action
 {
-
-    [SerializeField] private Rigidbody2D _rigidbody2D = null;
-    //[SerializeField] private CharacterData _data;
-    [SerializeField] private GroundCheck _groundCheck = null;
-
-    [SerializeField] private bool conserveMomentum = true;
-    [SerializeField, Range(0f, 100f)] private float _walkSpeed = 0;
-    [SerializeField, Range(0f, 100f)] private float _maxWalkAccelerationUnits = 0;
-    [SerializeField, Range(0f, 100f)] private float _maxWalkAirAccelerationUnits = 0;
-    [SerializeField, Range(0f, 100f)] private float _maxWalkDecelerationUnits = 0;
-    [SerializeField, Range(0f, 100f)] private float _maxWalkAirDecelerationUnits = 0;
     
-    private Vector2 _targetVelocity, _SpeedDiff;
-    private float _acceleration, _speedChange;
+    [SerializeField] private new Rigidbody2D rigidbody2D = null;
+    [SerializeField] private GroundCheck groundCheck = null;
     
-    public void Do(Vector2 direction)
+    [SerializeField, Range(0f, 100f)] private float walkSpeed = 0;
+    
+    [SerializeField, Range(0f, 100f)] private float maxWalkAccelerationUnits = 0;
+    [SerializeField, Range(0f, 100f)] private float maxWalkDecelerationUnits = 0;
+    [SerializeField, Range(0f, 100f)] private float maxWalkAirAccelerationUnits = 0;
+    [SerializeField, Range(0f, 100f)] private float maxWalkAirDecelerationUnits = 0;
+    
+    [SerializeField] private bool conserveMomentum = false;
+    
+    private float _acceleration, _speedChange, _targetVelocity, _speedDiff;
+    
+    
+    
+    
+    
+    public void Do(float direction)
     {
-        _targetVelocity = new Vector2(direction.x, 0f) * Mathf.Max(_walkSpeed - _groundCheck.GetFriction(), 0f);
+        _targetVelocity = direction * Mathf.Max(walkSpeed - groundCheck.GetFriction(), 0f);
 
+        
         //Checagem de OnGround e de se esta acelerando ou desacelerando
-        if (_groundCheck.GetOnGround())
+        if (groundCheck.GetOnGround())
         {
-            _acceleration = Mathf.Abs(_targetVelocity.x) > 0.01 ? _maxWalkAccelerationUnits : _maxWalkDecelerationUnits;
+            _acceleration = Mathf.Abs(_targetVelocity) > 0.01 ? maxWalkAccelerationUnits : maxWalkDecelerationUnits;
         }
         else
         {
-            _acceleration = Mathf.Abs(_targetVelocity.x) > 0.01 ? _maxWalkAirAccelerationUnits : _maxWalkAirDecelerationUnits;
+            _acceleration = Mathf.Abs(_targetVelocity) > 0.01 ? maxWalkAirAccelerationUnits : maxWalkAirDecelerationUnits;
         }
 
+        
         //Conservacao de Momento
-        if (conserveMomentum && (Mathf.Abs(_rigidbody2D.velocity.x) > Mathf.Abs(_targetVelocity.x)) &&
-            (Mathf.Sign(_rigidbody2D.velocity.x) == Mathf.Sign(_targetVelocity.x)) && (direction.x != 0f))
+        if (conserveMomentum && (Mathf.Abs(rigidbody2D.velocity.x) > Mathf.Abs(_targetVelocity)) &&
+            (Mathf.Sign(rigidbody2D.velocity.x) == Mathf.Sign(_targetVelocity)) && (direction != 0f))
         {
             _acceleration = 0f;
         }
 
-        _SpeedDiff = new Vector2(_targetVelocity.x - _rigidbody2D.velocity.x, 0f);
+        
+        _speedDiff = _targetVelocity - rigidbody2D.velocity.x;
+        
+        _speedChange = _acceleration * _speedDiff * rigidbody2D.mass;
         
         
-        _speedChange = _acceleration * _SpeedDiff.x;
-        
-        _rigidbody2D.AddForce(_speedChange * Vector2.right, ForceMode2D.Force);
-
+        rigidbody2D.AddForce(_speedChange * Vector2.right, ForceMode2D.Force);
     }
-    
-    
 }
